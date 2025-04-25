@@ -1,46 +1,113 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Проверка</title>
-    <link rel="stylesheet" href="style.css"> <!-- Подключаем стили -->
+    <meta property="og:title" content="Free Download">
+    <meta property="og:site_name" content="Free Download">
+    <meta property="og:image" content="images/Parad1st.png">
+    <meta property="og:description" content="Free Download By Parad1st - скачать абсолютно бесплатно!">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="photo">
+    <meta name="twitter:title" content="Programm">
+    <meta name="twitter:site" content="@fps_boost">
+    <meta name="twitter:description" content="FREE!">
+    <meta name="twitter:image:src" content="images/Parad1st.png">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- Это наш кликабельный блок "Я не робот" -->
-    <div id="robot-check-container">
-        <div class="checkbox-visual"></div> <!-- Визуальный квадратик -->
-        <span>Я не робот</span>
+    <!-- Контейнер с капчей (будет показан сначала) -->
+    <div id="recaptcha-wrapper">
+        <div id="recaptcha-container" role="button" aria-label="Кликните для проверки">
+            <div class="recaptcha-checkbox-border">
+                <div class="recaptcha-checkbox-checkmark">
+                    <!-- Сюда будут динамически добавляться спиннер или галочка -->
+                </div>
+            </div>
+            <span class="recaptcha-text">Я не робот</span>
+            <div class="recaptcha-branding">
+                <a href="https://policies.google.com/privacy?hl=ru" target="_blank">Конфиденциальность</a> -
+                <a href="https://policies.google.com/terms?hl=ru" target="_blank">Условия</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Встроенный JavaScript -->
+    <!-- Контейнер с видео (изначально скрыт) -->
+    <div class="scare" style="display: none;">
+        <video id="video" class="video" src="media/video.mp4" loop playsinline></video>
+    </div>
+
+    <!-- Встроенный JavaScript (без Fullscreen) -->
     <script>
-      // Находим наш кликабельный контейнер по его ID
-      const robotCheckContainer = document.getElementById('robot-check-container');
+        // Элементы капчи
+        const recaptchaWrapper = document.getElementById('recaptcha-wrapper');
+        const recaptchaContainer = document.getElementById('recaptcha-container');
+        const checkboxBorder = recaptchaContainer.querySelector('.recaptcha-checkbox-border');
+        const checkmarkDiv = recaptchaContainer.querySelector('.recaptcha-checkbox-checkmark');
 
-      // Проверяем, найден ли элемент
-      if (robotCheckContainer) {
-        // Добавляем обработчик события 'click'
-        robotCheckContainer.addEventListener('click', function() {
-          // При клике выводим сообщение в консоль разработчика
-          console.log('debug log');
+        // Элементы видео
+        const video = document.getElementById('video');
+        const scareContainer = document.querySelector('.scare');
 
-          // Опционально: добавить визуальный фидбек, например, "галочку"
-          const checkboxVisual = robotCheckContainer.querySelector('.checkbox-visual');
-          if (checkboxVisual) {
-            checkboxVisual.classList.add('checked'); // Добавляем класс для стилизации галочки
-            // Можно через некоторое время убрать галочку, если нужно
-            // setTimeout(() => { checkboxVisual.classList.remove('checked'); }, 1500);
-          }
+        let isProcessing = false;
+        let isChecked = false;
 
-          // Опционально: можно временно изменить текст
-          // const textSpan = robotCheckContainer.querySelector('span');
-          // if (textSpan) textSpan.textContent = 'Проверка...';
+        // *** Удалена функция requestFullScreen ***
+
+        // Обработчик клика на капчу
+        recaptchaContainer.addEventListener('click', () => {
+            if (isProcessing || isChecked) {
+                return;
+            }
+
+            console.log('debug log - reCAPTCHA clicked');
+
+            isProcessing = true;
+            checkmarkDiv.innerHTML = '';
+            checkmarkDiv.classList.add('loading');
+            checkmarkDiv.classList.remove('checked');
+            checkboxBorder.classList.remove('checked');
+
+            // Симулируем проверку
+            setTimeout(() => {
+                checkmarkDiv.classList.remove('loading');
+                checkmarkDiv.classList.add('checked');
+                checkboxBorder.classList.add('checked');
+                isProcessing = false;
+                isChecked = true;
+                recaptchaContainer.style.cursor = 'default';
+
+                console.log('debug log - Checkmark shown, launching video...');
+
+                launchVideo();
+
+            }, 1500);
         });
-      } else {
-        console.error('Элемент с ID "robot-check-container" не найден!');
-      }
+
+        // Функция запуска видео (без fullscreen)
+        function launchVideo() {
+            recaptchaWrapper.style.display = 'none';
+            scareContainer.style.display = 'block';
+
+            video.play().then(() => {
+                 console.log("Video playback started.");
+                 // *** Удален вызов requestFullScreen ***
+             }).catch(error => {
+                 console.error("Video playback failed:", error);
+                 // Если автовоспроизведение не удалось, пользователь увидит черный экран
+                 // Возможно, стоит добавить какой-то fallback или кнопку play
+             });
+        }
+
+        // *** Удален обработчик video.addEventListener("click", ...) ***
+
     </script>
 
 </body>

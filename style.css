@@ -1,67 +1,176 @@
-/* Базовые стили и центрирование */
+/* --- Сначала все стили для КАПЧИ из предыдущего ответа --- */
+
+/* Базовые стили и центрирование обертки капчи */
 body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Более стандартный шрифт */
-    background-color: #f0f2f5; /* Нейтральный светло-серый фон */
-    display: flex; /* Включаем Flexbox */
-    justify-content: center; /* Центрируем по горизонтали */
-    align-items: center;    /* Центрируем по вертикали */
-    min-height: 100vh; /* Занимаем всю высоту экрана */
-    color: #333; /* Темно-серый цвет текста */
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Roboto приоритет */
+    background-color: #f9f9f9;
+    /* Убираем Flexbox с body, т.к. контент будет меняться */
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    min-height: 100vh;
+    /* Если фон должен быть черным ПОСЛЕ запуска видео, это делается стилями для .scare */
 }
 
-/* Контейнер "Я не робот" */
-#robot-check-container {
-    display: flex; /* Располагаем элементы (квадратик и текст) в строку */
-    align-items: center; /* Выравниваем по центру вертикально */
-    gap: 12px; /* Расстояние между квадратиком и текстом */
-    background-color: #ffffff; /* Белый фон */
-    border: 1px solid #d3d9de; /* Серая рамка, как у reCAPTCHA */
-    border-radius: 4px; /* Слегка скругленные углы */
-    padding: 18px 25px; /* Внутренние отступы */
-    cursor: pointer; /* Курсор в виде руки */
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Легкая тень */
-    user-select: none; /* Запретить выделение текста при клике */
-    transition: background-color 0.2s ease; /* Плавный переход фона при наведении */
-}
-
-/* Эффект при наведении */
-#robot-check-container:hover {
-    background-color: #f7f8fa; /* Слегка изменить фон */
-}
-
-/* Визуальный квадратик (чекбокс) */
-.checkbox-visual {
-    width: 26px;
-    height: 26px;
-    border: 2px solid #c1c1c1; /* Рамка квадратика */
-    background-color: #ffffff;
-    border-radius: 3px;
+/* Обертка для центрирования капчи */
+#recaptcha-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: background-color 0.2s ease, border-color 0.2s ease; /* Плавный переход для галочки */
+    min-height: 100vh; /* Центрирует по вертикали */
+    padding: 20px; /* Отступы на маленьких экранах */
+    box-sizing: border-box;
 }
 
-/* Стили для текста */
-#robot-check-container span {
+/* Главный контейнер капчи (без изменений) */
+#recaptcha-container {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #d3d3d3;
+    border-radius: 3px;
+    padding: 10px 12px 12px 12px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    position: relative;
+    width: 302px;
+    /* height: 74px; */ /* Убираем фикс высоту, чтобы не было проблем с переносом текста */
+    box-sizing: border-box;
+    /* Добавим, чтобы точно не вылезал за пределы обертки на мал. экранах */
+    max-width: 100%;
+}
+
+/* Рамка чекбокса (без изменений) */
+.recaptcha-checkbox-border {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #c1c1c1;
+    background-color: #ffffff;
+    border-radius: 2px;
+    margin-right: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: border-color 0.1s ease-in-out;
+    flex-shrink: 0;
+}
+
+#recaptcha-container:hover .recaptcha-checkbox-border:not(.checked) {
+    border-color: #b9b9b9;
+}
+
+/* Галочка/Спиннер внутри рамки (без изменений) */
+.recaptcha-checkbox-checkmark {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Текст "Я не робот" (небольшая правка) */
+.recaptcha-text {
     font-size: 14px;
+    color: #000;
+    line-height: 1.3;
+    white-space: nowrap;
+    /* Отступ убран, регулируется пробелами между блоками */
 }
 
-/* Стили для "галочки" (появляется при добавлении класса 'checked') */
-.checkbox-visual.checked {
-    background-color: #34a853; /* Зеленый фон */
-    border-color: #34a853; /* Зеленая рамка */
+/* Контейнер для ссылок (ранее .recaptcha-logo) (немного правок) */
+.recaptcha-branding {
+    font-size: 10px;
+    color: #555;
+    text-align: right;
+    /* Автоматический отступ слева от текста "Я не робот" */
+    margin-left: auto;
+    padding-left: 10px; /* Небольшой отступ от текста */
+    white-space: nowrap; /* Запрет переноса ссылок */
+    align-self: flex-end; /* Прижимаем к низу, если текст не влезает */
+    line-height: 1.3; /* Выравнивание с текстом */
 }
 
-/* Рисуем галочку с помощью псевдоэлемента */
-.checkbox-visual.checked::after {
+/* Стиль ссылок */
+.recaptcha-branding a {
+    color: #555;
+    text-decoration: none;
+}
+.recaptcha-branding a:hover {
+    text-decoration: underline;
+}
+
+
+/* --- Спиннер --- */
+.recaptcha-checkbox-checkmark.loading::after {
+    content: "";
+    display: block;
+    width: 18px;
+    height: 18px;
+    border: 3px solid #e0e0e0;
+    border-top-color: #4285f4;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: recaptcha-spin 0.8s linear infinite;
+}
+
+@keyframes recaptcha-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Галочка --- */
+.recaptcha-checkbox-checkmark.checked::after {
     content: '';
     display: block;
-    width: 6px;
-    height: 12px;
-    border: solid white;
+    width: 7px;
+    height: 14px;
+    border: solid #0f9d58;
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
-    margin-bottom: 2px; /* Небольшая коррекция позиции галочки */
+    margin-top: -4px;
+    margin-left: -1px;
 }
+
+/* Окрашивание рамки при галочке */
+.recaptcha-checkbox-border.checked {
+   border-color: #0f9d58;
+}
+
+
+/* --- Стили для ВИДЕО (из вашего кода) --- */
+
+.scare {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* Занимает весь экран */
+    width: 100vw;
+    z-index: 10; /* Должен быть поверх всего (капчи уже не будет) */
+    background-color: #000; /* Черный фон для видео */
+    /* display: none; управляется JS */
+}
+
+video#video {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* Растягивает видео с сохранением пропорций, обрезая лишнее */
+}
+
+/* Скрытие стандартных контролов видео (из вашего кода) */
+video#video::-webkit-media-controls-enclosure {
+    display: none !important;
+}
+/* Можно добавить аналогичные правила для других браузеров при необходимости */
+video#video::-moz-media-controls {
+    display: none !important;
+}
+video#video::-ms-media-controls {
+    display: none !important;
+}
+video#video::media-controls {
+     display: none !important;
+}
+
+/* Стили для вашего оверлея cookie - УДАЛЕНЫ, т.к. он больше не используется */
