@@ -1,127 +1,64 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="utf-8">
-    <!-- Исправлена опечатка в viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Free Download By Parad1st</title>
-    <meta property="og:title" content="Free Download">
-    <meta property="og:site_name" content="Free Download">
-    <meta property="og:image" content="images/Parad1st.png">
-    <meta property="og:description" content="Free Download By Parad1st - скачать абсолютно бесплатно!">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="photo">
-    <meta name="twitter:title" content="Programm">
-    <meta name="twitter:site" content="@fps_boost">
-    <meta name="twitter:description" content="FREE!">
-    <meta name="twitter:image:src" content="Parad1st.png">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap" rel="stylesheet">
-    <style type="text/css">
-        p {
-            margin: 0;
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        /* Стили для оверлея удалены */
-
-        .scare {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 100vw;
-            z-index: 1; /* Оверлея больше нет, z-index не так важен, но оставим */
-            background-color: #000; /* Черный фон на случай, если видео не загрузится сразу */
-        }
-
-        video#video {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-        }
-
-        /* Скрытие стандартных контролов видео */
-        video#video::-webkit-media-controls-enclosure {
-            display: none !important;
-        }
-        video#video::-webkit-media-controls {
-            display: none !important;
-        }
-        video#video::--media-controls { /* Для Firefox */
-            display: none !important;
-        }
-
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VK Style Page</title>
+    <link rel="stylesheet" href="style.css"> <!-- Стили все еще во внешнем файле -->
 </head>
 <body>
+    <div id="header">
+        <div class="header-content">
+            <span class="logo">ВКОНТАКТЕ</span>
+            <!-- Можно добавить поиск, иконки и т.д. -->
+        </div>
+    </div>
 
-<!-- Оверлей удален -->
+    <div id="main-container">
+        <div id="sidebar">
+            <ul>
+                <li><a href="#">Моя страница</a></li>
+                <li><a href="#">Новости</a></li>
+                <li><a href="#">Мессенджер</a></li>
+                <li><a href="#">Друзья</a></li>
+                <li><a href="#">Сообщества</a></li>
+                <li><a href="#">Музыка</a></li>
+                <li><a href="#">Видео</a></li>
+            </ul>
+        </div>
 
-<div class="scare">
-    <video id="video" class="video" src="media/video.mp4" loop playsinline muted></video>
-    <!-- Добавлены playsinline и muted для лучшей автопроигрываемости на мобильных -->
-</div>
+        <div id="content">
+            <!-- Вот наш "проверочный" блок по центру -->
+            <div id="robot-check">
+                 <!-- Можно добавить иконку "галочки" или что-то еще -->
+                 <span>Я не робот</span>
+                 <div class="checkbox-placeholder"></div> <!-- Просто для вида -->
+            </div>
+            <!-- Сюда можно добавить другой контент страницы -->
+        </div>
+    </div>
 
-<script type="text/javascript">
-    const video = document.getElementById("video");
+    <!-- Встроенный JavaScript -->
+    <script>
+      // Находим наш элемент "проверки на робота" по его ID
+      const robotCheckElement = document.getElementById('robot-check');
 
-    // Функция для запроса полноэкранного режима
-    function videoClick(event) {
-        // Предотвращаем стандартное поведение, если вызвано событием
-        if (event) event.preventDefault();
+      // Проверяем, найден ли элемент (хорошая практика)
+      if (robotCheckElement) {
+        // Добавляем обработчик события 'click'
+        robotCheckElement.addEventListener('click', function() {
+          // При клике выводим сообщение в консоль разработчика
+          console.log('debug log');
 
-        const { documentElement } = document;
-        // Пытаемся включить полноэкранный режим разными способами для совместимости
-        if (documentElement.requestFullscreen) {
-            documentElement.requestFullscreen().catch(err => {
-                console.log(`Ошибка при попытке войти в полноэкранный режим: ${err.message} (${err.name})`);
-            });
-        } else if (documentElement.mozRequestFullScreen) { // Firefox
-            documentElement.mozRequestFullScreen();
-        } else if (documentElement.webkitRequestFullscreen) { // Chrome, Safari & Opera
-            documentElement.webkitRequestFullscreen();
-        } else if (documentElement.msRequestFullscreen) { // IE/Edge
-            documentElement.msRequestFullscreen();
-        }
-    }
-
-    // --- Функция активации скримера ---
-    // Содержит логику запуска видео и перехода в полноэкранный режим.
-    // Вы можете вызвать эту функцию из другого места, если уберете ее немедленный вызов ниже.
-    function startScreamer() {
-        // Пытаемся воспроизвести видео. muted часто помогает с автоплеем.
-        video.play().then(() => {
-            // Видео успешно начало играть (или уже играло)
-            console.log("Видео воспроизводится");
-            // Убираем muted после начала воспроизведения, если нужно
-            // video.muted = false; // Раскомментируйте, если в видео есть звук
-        }).catch(error => {
-            console.error("Ошибка автовоспроизведения видео:", error);
-            // Автоплей может быть заблокирован браузером,
-            // часто требуется взаимодействие пользователя.
-            // Клик по видео все равно сработает благодаря слушателю ниже.
+          // Опционально: можно добавить визуальный фидбек,
+          // например, изменить текст или стиль элемента после клика
+          // robotCheckElement.textContent = 'Проверка пройдена!';
+          // robotCheckElement.style.backgroundColor = '#e5efe5'; // Зеленоватый фон
         });
-
-        // Запрашиваем полноэкранный режим
-        videoClick();
-    }
-    // --- Конец функции активации скримера ---
-
-    // Добавляем слушатель на клик по видео (на случай выхода из fullscreen или проблем с автоплеем)
-    video.addEventListener("click", videoClick);
-
-    // === НЕПОСРЕДСТВЕННЫЙ ЗАПУСК СКРИМЕРА ===
-    // Вызываем функцию активации сразу при загрузке скрипта.
-    // Если хотите вызывать скример по другому событию (таймер, кнопка и т.д.),
-    // закомментируйте или удалите следующую строку и вызывайте startScreamer() в нужном месте.
-    startScreamer();
-    // =========================================
-
-</script>
+      } else {
+        console.error('Элемент с ID "robot-check" не найден!');
+      }
+    </script>
 
 </body>
 </html>
