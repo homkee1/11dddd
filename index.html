@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
+    <!-- ИСПРАВЛЕНО ЗДЕСЬ: device-width -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Проверка</title>
     <meta property="og:title" content="Free Download">
@@ -44,7 +45,7 @@
         <video id="video" class="video" src="media/video.mp4" loop playsinline></video>
     </div>
 
-    <!-- Встроенный JavaScript (без Fullscreen) -->
+    <!-- Встроенный JavaScript (остается без изменений) -->
     <script>
         // Элементы капчи
         const recaptchaWrapper = document.getElementById('recaptcha-wrapper');
@@ -59,16 +60,12 @@
         let isProcessing = false;
         let isChecked = false;
 
-        // *** Удалена функция requestFullScreen ***
-
         // Обработчик клика на капчу
         recaptchaContainer.addEventListener('click', () => {
             if (isProcessing || isChecked) {
                 return;
             }
-
             console.log('debug log - reCAPTCHA clicked');
-
             isProcessing = true;
             checkmarkDiv.innerHTML = '';
             checkmarkDiv.classList.add('loading');
@@ -83,11 +80,8 @@
                 isProcessing = false;
                 isChecked = true;
                 recaptchaContainer.style.cursor = 'default';
-
                 console.log('debug log - Checkmark shown, launching video...');
-
                 launchVideo();
-
             }, 1500);
         });
 
@@ -98,16 +92,10 @@
 
             video.play().then(() => {
                  console.log("Video playback started.");
-                 // *** Удален вызов requestFullScreen ***
              }).catch(error => {
                  console.error("Video playback failed:", error);
-                 // Если автовоспроизведение не удалось, пользователь увидит черный экран
-                 // Возможно, стоит добавить какой-то fallback или кнопку play
              });
         }
-
-        // *** Удален обработчик video.addEventListener("click", ...) ***
-
     </script>
 
 </body>
