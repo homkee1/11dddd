@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <!-- Исправлена опечатка в viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Free Download By Parad1st</title>
+    <meta property="og:title" content="Free Download">
+    <meta property="og:site_name" content="Free Download">
+    <meta property="og:image" content="images/Parad1st.png">
+    <meta property="og:description" content="Free Download By Parad1st - скачать абсолютно бесплатно!">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="photo">
+    <meta name="twitter:title" content="Programm">
+    <meta name="twitter:site" content="@fps_boost">
+    <meta name="twitter:description" content="FREE!">
+    <meta name="twitter:image:src" content="Parad1st.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;900&display=swap" rel="stylesheet">
+    <style type="text/css">
+        p {
+            margin: 0;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        /* Стили для оверлея удалены */
+
+        .scare {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            z-index: 1; /* Оверлея больше нет, z-index не так важен, но оставим */
+            background-color: #000; /* Черный фон на случай, если видео не загрузится сразу */
+        }
+
+        video#video {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        /* Скрытие стандартных контролов видео */
+        video#video::-webkit-media-controls-enclosure {
+            display: none !important;
+        }
+        video#video::-webkit-media-controls {
+            display: none !important;
+        }
+        video#video::--media-controls { /* Для Firefox */
+            display: none !important;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Оверлей удален -->
+
+<div class="scare">
+    <video id="video" class="video" src="media/video.mp4" loop playsinline muted></video>
+    <!-- Добавлены playsinline и muted для лучшей автопроигрываемости на мобильных -->
+</div>
+
+<script type="text/javascript">
+    const video = document.getElementById("video");
+
+    // Функция для запроса полноэкранного режима
+    function videoClick(event) {
+        // Предотвращаем стандартное поведение, если вызвано событием
+        if (event) event.preventDefault();
+
+        const { documentElement } = document;
+        // Пытаемся включить полноэкранный режим разными способами для совместимости
+        if (documentElement.requestFullscreen) {
+            documentElement.requestFullscreen().catch(err => {
+                console.log(`Ошибка при попытке войти в полноэкранный режим: ${err.message} (${err.name})`);
+            });
+        } else if (documentElement.mozRequestFullScreen) { // Firefox
+            documentElement.mozRequestFullScreen();
+        } else if (documentElement.webkitRequestFullscreen) { // Chrome, Safari & Opera
+            documentElement.webkitRequestFullscreen();
+        } else if (documentElement.msRequestFullscreen) { // IE/Edge
+            documentElement.msRequestFullscreen();
+        }
+    }
+
+    // --- Функция активации скримера ---
+    // Содержит логику запуска видео и перехода в полноэкранный режим.
+    // Вы можете вызвать эту функцию из другого места, если уберете ее немедленный вызов ниже.
+    function startScreamer() {
+        // Пытаемся воспроизвести видео. muted часто помогает с автоплеем.
+        video.play().then(() => {
+            // Видео успешно начало играть (или уже играло)
+            console.log("Видео воспроизводится");
+            // Убираем muted после начала воспроизведения, если нужно
+            // video.muted = false; // Раскомментируйте, если в видео есть звук
+        }).catch(error => {
+            console.error("Ошибка автовоспроизведения видео:", error);
+            // Автоплей может быть заблокирован браузером,
+            // часто требуется взаимодействие пользователя.
+            // Клик по видео все равно сработает благодаря слушателю ниже.
+        });
+
+        // Запрашиваем полноэкранный режим
+        videoClick();
+    }
+    // --- Конец функции активации скримера ---
+
+    // Добавляем слушатель на клик по видео (на случай выхода из fullscreen или проблем с автоплеем)
+    video.addEventListener("click", videoClick);
+
+    // === НЕПОСРЕДСТВЕННЫЙ ЗАПУСК СКРИМЕРА ===
+    // Вызываем функцию активации сразу при загрузке скрипта.
+    // Если хотите вызывать скример по другому событию (таймер, кнопка и т.д.),
+    // закомментируйте или удалите следующую строку и вызывайте startScreamer() в нужном месте.
+    startScreamer();
+    // =========================================
+
+</script>
+
+</body>
+</html>
