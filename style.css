@@ -1,0 +1,67 @@
+/* Базовые стили и центрирование */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Более стандартный шрифт */
+    background-color: #f0f2f5; /* Нейтральный светло-серый фон */
+    display: flex; /* Включаем Flexbox */
+    justify-content: center; /* Центрируем по горизонтали */
+    align-items: center;    /* Центрируем по вертикали */
+    min-height: 100vh; /* Занимаем всю высоту экрана */
+    color: #333; /* Темно-серый цвет текста */
+}
+
+/* Контейнер "Я не робот" */
+#robot-check-container {
+    display: flex; /* Располагаем элементы (квадратик и текст) в строку */
+    align-items: center; /* Выравниваем по центру вертикально */
+    gap: 12px; /* Расстояние между квадратиком и текстом */
+    background-color: #ffffff; /* Белый фон */
+    border: 1px solid #d3d9de; /* Серая рамка, как у reCAPTCHA */
+    border-radius: 4px; /* Слегка скругленные углы */
+    padding: 18px 25px; /* Внутренние отступы */
+    cursor: pointer; /* Курсор в виде руки */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Легкая тень */
+    user-select: none; /* Запретить выделение текста при клике */
+    transition: background-color 0.2s ease; /* Плавный переход фона при наведении */
+}
+
+/* Эффект при наведении */
+#robot-check-container:hover {
+    background-color: #f7f8fa; /* Слегка изменить фон */
+}
+
+/* Визуальный квадратик (чекбокс) */
+.checkbox-visual {
+    width: 26px;
+    height: 26px;
+    border: 2px solid #c1c1c1; /* Рамка квадратика */
+    background-color: #ffffff;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease; /* Плавный переход для галочки */
+}
+
+/* Стили для текста */
+#robot-check-container span {
+    font-size: 14px;
+}
+
+/* Стили для "галочки" (появляется при добавлении класса 'checked') */
+.checkbox-visual.checked {
+    background-color: #34a853; /* Зеленый фон */
+    border-color: #34a853; /* Зеленая рамка */
+}
+
+/* Рисуем галочку с помощью псевдоэлемента */
+.checkbox-visual.checked::after {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px; /* Небольшая коррекция позиции галочки */
+}
